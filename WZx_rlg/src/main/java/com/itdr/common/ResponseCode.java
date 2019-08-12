@@ -1,7 +1,6 @@
 package com.itdr.common;
 
 
-import java.security.PrivateKey;
 
 //这个类为了确保返回给前端的对象，都是同一个类的对象，然后把数据封装到这个类里
 public class ResponseCode<T> {//泛型类
@@ -41,33 +40,33 @@ public class ResponseCode<T> {//泛型类
     //是否成功
 
     //成功的时候返回状态码和成功获取的数据
-    public static <T> ResponseCode successRS(Integer status,T data){
+    public static <T>ResponseCode successRS(Integer status,T data){
         ResponseCode rs = new ResponseCode();
         rs.setStatus(status);
         rs.setData(data);
         return rs;
     }
-    public static <T> ResponseCode successRS(T data){
+    //如果成功状态码为0
+    public static <T>ResponseCode successRS(T data){
         ResponseCode rs = new ResponseCode();
         rs.setStatus(0);
         rs.setData(data);
         return rs;
     }
+
     //失败的时候返回状态码和失败的信息
-    public static <T> ResponseCode defeatedRS(Integer status,String mag){
+    public static <T>ResponseCode defeatedRS(Integer status,String mag){
         ResponseCode rs = new ResponseCode();
         rs.setStatus(status);
         rs.setMag(mag);
         return rs;
     }
-
-
     @Override
     public String toString() {
-        return "ResponseCode{" +
-                "status=" + status +
-                ", data=" + data +
-                ", mag='" + mag + '\'' +
-                '}';
+        return "{" +
+                "\"status\":" + status +
+                ",\"data\":" + data +
+                ",\"mag\":" + mag  +
+                "}";
     }
 }

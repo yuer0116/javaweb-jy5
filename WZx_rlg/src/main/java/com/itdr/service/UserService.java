@@ -4,7 +4,6 @@ import com.itdr.common.Const;
 import com.itdr.common.ResponseCode;
 import com.itdr.dao.UserDao;
 import com.itdr.pojo.Users;
-import com.sun.org.omg.CORBA.ContextIdSeqHelper;
 
 
 import java.util.List;
@@ -22,10 +21,7 @@ public class UserService {
         }
 
         //调用数据层
-
         List<Users> li = ud.selectAll(pageSize,pageNum);
-
-        //如果集合元素是空呢？
 
         ResponseCode rs = ResponseCode.successRS(li);
 
@@ -56,8 +52,6 @@ public class UserService {
         }
 
         //如果用户存在 ，又有操作权限
-//        rs.setStatus(0);
-//        rs.setData(u);
         rs = ResponseCode.successRS(u);
         return rs;
     }
@@ -70,7 +64,6 @@ public class UserService {
             rs = ResponseCode.defeatedRS(Const.USER_PARAMETER_CODE,Const.USER_PARAMETER_MSG);
             return rs;
         }
-
         //字符串转数值
         Integer uid = null;
         try {//因为上面即使传进来一个abc，上面的判断也不会认为有错，在转型的时候就会报错，所以try/catch
@@ -79,11 +72,8 @@ public class UserService {
             rs = ResponseCode.defeatedRS(105,"输入非法参数");
             return rs;
         }
-
         //查找是否有这样一个用户
         Users u = ud.selectOne(uid);
-
-
         //如果用户不存在
         if (u == null){
             rs = ResponseCode.defeatedRS(Const.USER_NO_CODE,Const.USER_NO_MSG);
