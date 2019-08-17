@@ -4,7 +4,6 @@ import com.itdr.common.Const;
 import com.itdr.common.ResponseCode;
 import com.itdr.dao.ProductDao;
 import com.itdr.pojo.Product;
-import com.itdr.pojo.Users;
 
 import java.util.List;
 
@@ -86,70 +85,21 @@ public class ProductService {
     }
 
     //商品上下架，修改商品状态
-    public ResponseCode set_sale_status(String productId) {
+    public ResponseCode set_sale_status(String productId, String productStatus) {
         ResponseCode rs = new ResponseCode();
-
+        //设置默认值
         if (productId == null || productId.equals("")){
-            rs = ResponseCode.defeatedRS(Const.USER_PARAMETER_CODE,Const.USER_PARAMETER_MSG);
+            rs.setStatus(109);
+            rs.setMag("商品id为空，请重新输入");
+            return  rs;
+        }
+        if (productStatus == null || productStatus.equals("")){
+            rs.setStatus(108);
+            rs.setMag("请输入您要添加的商品名称");
             return rs;
         }
-        //字符串转数值
-        Integer pid = null;
-        try {//因为上面即使传进来一个abc，上面的判断也不会认为有错，在转型的时候就会报错，所以try/catch
-            pid = Integer.parseInt(productId);
-        }catch (Exception e){
-            rs = ResponseCode.defeatedRS(109,"输入非法参数");
-            return rs;
-        }
-        //查找是否有这样一个用户
-        Product product = pd.product_detail(productId);
-        //如果用户不存在
-        if (product == null){
-            rs = ResponseCode.defeatedRS(Const.USER_NO_CODE,Const.USER_NO_MSG);//消息码有问题
-            return rs;
-        }
+        Product product = pd.set_sale_status(productId,productStatus);
 
-        int row = pd.set_sale_status(productId);//uid传进来应该是一个 Integer的值,最终返回一个int类型的值
-        if (row <= 0){//如果小于等于0，代表禁用用户的过程失败了
-            rs = ResponseCode.defeatedRS(106,"商品下架失败");
-            return rs;
-        }
-
-        rs.setStatus(0);
-        rs.setData(row);
-        return rs;
-    }
-
-    //商品上架
-    public ResponseCode set_sale_statusSJ(String productId) {
-        ResponseCode rs = new ResponseCode();
-
-        if (productId == null || productId.equals("")){
-            rs = ResponseCode.defeatedRS(Const.USER_PARAMETER_CODE,Const.USER_PARAMETER_MSG);
-            return rs;
-        }
-        //字符串转数值
-        Integer pid = null;
-        try {//因为上面即使传进来一个abc，上面的判断也不会认为有错，在转型的时候就会报错，所以try/catch
-            pid = Integer.parseInt(productId);
-        }catch (Exception e){
-            rs = ResponseCode.defeatedRS(109,"输入非法参数");
-            return rs;
-        }
-        //查找是否有这样一个用户
-        Product product = pd.product_detail(productId);
-        //如果用户不存在
-        if (product == null){
-            rs = ResponseCode.defeatedRS(Const.USER_NO_CODE,Const.USER_NO_MSG);//消息码有问题
-            return rs;
-        }
-        int row = pd.set_sale_statusSJ(productId);//uid传进来应该是一个 Integer的值,最终返回一个int类型的值
-        if (row <= 0){//如果小于等于0，代表禁用用户的过程失败了
-            rs = ResponseCode.defeatedRS(106,"商品上架失败");
-            return rs;
-        }
-        rs.setStatus(0);
-        rs.setData(row);
         return rs;
     }
 

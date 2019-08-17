@@ -2,7 +2,6 @@ package com.itdr.controller;
 
 import com.itdr.common.ResponseCode;
 import com.itdr.service.CategoryService;
-import com.itdr.utils.JsonUtils;
 import com.itdr.utils.PathUtil;
 
 import javax.servlet.ServletException;
@@ -29,19 +28,21 @@ public class CategoryController extends HttpServlet {
         //判断一下是什么样的请求
         switch (path){
             case "clist"://先获取商品分类列表
-                rs = clistDo(request,response);
+                rs = clistDo(request);
+                break;
+            case "plist"://输入商品分类id后，获取品类子节点
+                rs = plistDo(request);
                 break;
             case "add_category"://添加商品分类
                 rs = add_categoryDo(request);
                 break;
-            case "set_category_name"://
+            case "set_category_name"://添加商品分类
                 rs = set_category_nameDo(request);
                 break;
         }
 
         //返回响应数据
-        response.setContentType("text/json;charset = utf-8");
-        response.getWriter().write(JsonUtils.obj2String(rs));
+        response.getWriter().write(rs.toString());
     }
 
     //修改商品分类名称
@@ -70,12 +71,32 @@ public class CategoryController extends HttpServlet {
     }
 
     //获取分类列表
-    private ResponseCode clistDo(HttpServletRequest request,HttpServletResponse response) {
+    private ResponseCode clistDo(HttpServletRequest request) {
        ResponseCode rs =new ResponseCode();
+
+        //获取参数
         String pageSize = request.getParameter("pageSize");
         String pageNum =request.getParameter("pageNum");
+
+        //调用业务层处理业务
         rs = cs.selectAll(pageSize, pageNum);
         return rs;
     }
+
+    //获取品类子节点列表
+    private ResponseCode plistDo(HttpServletRequest request){
+
+        ResponseCode rs =new ResponseCode();
+
+        //获取参数
+        String categoryId = request.getParameter("categoryId");
+
+        //调用业务层处理业务
+        rs = cs.selectSonAll(categoryId);
+
+        return rs;
+
+    }
+
 
 }

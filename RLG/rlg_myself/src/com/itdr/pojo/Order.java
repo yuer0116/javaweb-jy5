@@ -1,9 +1,11 @@
 package com.itdr.pojo;
 
+import java.math.BigInteger;
+
 public class Order {
     private Integer id;//订单id
     private Integer user_id;//用户id
-    private String order_no;//订单号
+    private BigInteger order_no;//订单号
     private Double payment;//实际支付金额
     private Integer payment_type;//支付类型
     private Integer postage;//'运费，单位是元',
@@ -42,11 +44,11 @@ public class Order {
         this.user_id = user_id;
     }
 
-    public String getOrder_no() {
+    public BigInteger getOrder_no() {
         return order_no;
     }
 
-    public void setOrder_no(String order_no) {
+    public void setOrder_no(BigInteger order_no) {
         this.order_no = order_no;
     }
 

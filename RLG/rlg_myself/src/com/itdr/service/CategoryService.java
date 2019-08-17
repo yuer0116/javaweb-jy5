@@ -50,6 +50,27 @@ public class CategoryService {
         return rs;
     }
 
+    //获取子节点列表
+    public ResponseCode selectSonAll(String categoryId) {
+        ResponseCode rs = new ResponseCode();
+        if (categoryId == null || categoryId.equals("")){
+            rs.setStatus(3);
+            rs.setMag("请输入您要查看的品类编号");
+            return rs;
+        }
+        //调用数据层
+        List<Product> li = cd.selectSonAll(categoryId);
+        //如果商品分类不存在
+        if (li.size() == 0){
+            rs.setStatus(Const.CATEGORY_NO_CODE);
+            rs.setMag(Const.CATEGORY_NO_MSG);
+            return rs;
+        }
+        rs.setStatus(0);
+        rs.setData(li);
+        return rs;
+    }
+
     //增加分类节点
     public ResponseCode add_category(String parentId, String categoryName) {
         ResponseCode rs = new ResponseCode();
@@ -74,6 +95,8 @@ public class CategoryService {
         rs.setMag("商品品类添加成功");
         return rs;
     }
+
+
 
 }
 

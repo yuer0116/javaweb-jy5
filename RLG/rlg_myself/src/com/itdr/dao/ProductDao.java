@@ -1,6 +1,5 @@
 package com.itdr.dao;
 
-import com.itdr.common.ResponseCode;
 import com.itdr.pojo.Product;
 import com.itdr.utils.PoolUtil;
 import org.apache.commons.dbutils.QueryRunner;
@@ -25,6 +24,7 @@ public class ProductDao {
 
         return li;
     }
+
 
     //搜索商品
     public List<Product> search_product(String productName) {
@@ -86,29 +86,16 @@ public class ProductDao {
         return li;
     }
 
-    //商品下架
-    public int set_sale_status(String productId) {
+    //商品上下架
+    public Product set_sale_status(String productId, String productStatus) {
         QueryRunner qr = new QueryRunner(PoolUtil.getCom());
-        String sql = "update product set status = 1 where id = ?";
-        int a = 0;
+        String sql = "update product set status = ? where id = ?";
+        Product product = null;
         try {
-            a =qr.update(sql,productId);
+            product =qr.query(sql, new BeanHandler<Product>(Product.class),productStatus,productId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return a;
-    }
-
-    //商品上架
-    public int set_sale_statusSJ(String productId) {
-        QueryRunner qr = new QueryRunner(PoolUtil.getCom());
-        String sql = "update product set status = 0 where id = ?";
-        int a = 0;
-        try {
-            a =qr.update(sql,productId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return a;
+        return product;
     }
 }

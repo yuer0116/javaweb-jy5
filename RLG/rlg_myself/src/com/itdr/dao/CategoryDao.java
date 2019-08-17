@@ -24,6 +24,19 @@ public class CategoryDao {
         return li;
     }
 
+    //获得要查看的品类子节点的列表
+    public List<Product> selectSonAll(String categoryId) {
+        QueryRunner qr = new QueryRunner(PoolUtil.getCom());
+        String sql = "select * from  product  where  parentId = ?";
+        List<Product> li = null;
+        try {
+            li= qr.query(sql, new BeanListHandler<Product>(Product.class),categoryId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return li;
+    }
+
     //增加品类
     public List<Category> add_category(String parentId, String categoryName)  {
         QueryRunner qr = new QueryRunner(PoolUtil.getCom());

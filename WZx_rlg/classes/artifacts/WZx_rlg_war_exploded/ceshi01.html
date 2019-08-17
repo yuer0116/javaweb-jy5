@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="text" placeholder="请输入用户名" id="un">
+<input type="button" value="登录" id="btn">
+
+</body>
+</html>
+<script src="js/jquery-3.3.1.js"></script>
+<script>
+    $("#un").blur(function () {
+        var username = $("#un").val();
+        $.post(
+            "/manage/user/yz.do",
+            {username:username},
+            function (bool) {
+                $("#un").after("<span>" + bool + "</span>");
+            }
+        )
+    })
+</script>

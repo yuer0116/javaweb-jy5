@@ -37,6 +37,7 @@ import java.util.List;
         }
         return u;
     }
+
     //根据id查找一个用户
     public Users selectOne(Integer uid) {
         QueryRunner qr = new QueryRunner(PoolUtil.getCom());
